@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="03-1-create-tests-table" author="parog">
+        <createTable tableName="tests">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="text"/>
+
+            <column name="time_limit" type="integer" defaultValueNumeric="60"/>
+
+            <column name="course_id" type="bigint"/>
+
+            <column name="lesson_id" type="bigint"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="03-2-create-questions-table" author="parog">
+        <createTable tableName="questions">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="question_text" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="question_type" type="varchar(50)" defaultValue="SINGLE_CHOICE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="points" type="integer" defaultValueNumeric="1"/>
+
+            <column name="order_index" type="integer" defaultValueNumeric="0"/>
+
+            <column name="test_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_question_test"
+                             references="tests(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="03-3-create-answer-options-table" author="parog">
+        <createTable tableName="answer_options">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="option_text" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_correct" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_answer_question"
+                             references="questions(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

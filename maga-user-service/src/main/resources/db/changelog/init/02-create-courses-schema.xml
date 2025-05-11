@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="02-1-create-courses-table" author="parog">
+        <createTable tableName="courses">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="text"/>
+
+            <column name="instructor_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_course_instructor"
+                             references="users(id)"/>
+            </column>
+
+            <column name="published" type="boolean" defaultValueBoolean="false"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02-2-create-modules-table" author="parog">
+        <createTable tableName="modules">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="text"/>
+
+            <column name="order_index" type="integer" defaultValueNumeric="0"/>
+
+            <column name="course_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_module_course"
+                             references="courses(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02-3-create-lessons-table" author="parog">
+        <createTable tableName="lessons">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="content" type="text"/>
+
+            <column name="order_index" type="integer" defaultValueNumeric="0"/>
+
+            <column name="module_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_lesson_module"
+                             references="modules(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="test_id" type="bigint"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="02-4-create-enrollments-table" author="parog">
+        <createTable tableName="enrollments">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_enrollment_user"
+                             references="users(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="course_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_enrollment_course"
+                             references="courses(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="enrolled_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="completed_at" type="timestamp"/>
+
+            <column name="completed" type="boolean" defaultValueBoolean="false"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

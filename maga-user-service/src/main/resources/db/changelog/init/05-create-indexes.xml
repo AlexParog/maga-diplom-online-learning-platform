@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <!-- Индексы для таблицы users -->
+    <changeSet id="05-1-create-indexes-for-users-table" author="parog">
+        <createIndex indexName="idx_users_email" tableName="users">
+            <column name="email"/>
+        </createIndex>
+        <createIndex indexName="idx_users_username" tableName="users">
+            <column name="username"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы user_roles -->
+    <changeSet id="05-2-create-indexes-for-user_roles-table" author="parog">
+        <createIndex indexName="idx_user_roles_role_id" tableName="user_roles">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы courses -->
+    <changeSet id="05-3-create-indexes-for-courses-table" author="parog">
+        <createIndex indexName="idx_courses_instructor_id" tableName="courses">
+            <column name="instructor_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_courses_published" tableName="courses">
+            <column name="published"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы modules -->
+    <changeSet id="05-4-create-indexes-for-modules-table" author="parog">
+        <createIndex indexName="idx_modules_course_id" tableName="modules">
+            <column name="course_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы lessons -->
+    <changeSet id="05-5-create-indexes-for-lessons-table" author="parog">
+        <createIndex indexName="idx_lessons_module_id" tableName="lessons">
+            <column name="module_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_lessons_test_id" tableName="lessons">
+            <column name="test_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы enrollments -->
+    <changeSet id="05-6-create-indexes-for-enrollments-table" author="parog">
+        <createIndex indexName="idx_enrollments_user_id" tableName="enrollments">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_enrollments_course_id" tableName="enrollments">
+            <column name="course_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_enrollments_completed" tableName="enrollments">
+            <column name="completed"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы tests -->
+    <changeSet id="05-7-create-indexes-for-tests-table" author="parog">
+        <createIndex indexName="idx_tests_course_id" tableName="tests">
+            <column name="course_id"/>
+        </createIndex>
+        <createIndex indexName="idx_tests_lesson_id" tableName="tests">
+            <column name="lesson_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы questions -->
+    <changeSet id="05-8-create-indexes-for-questions-table" author="parog">
+        <createIndex indexName="idx_questions_test_id" tableName="questions">
+            <column name="test_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы answer_options -->
+    <changeSet id="05-9-create-indexes-for-answer_options-table" author="parog">
+        <createIndex indexName="idx_answer_options_question_id" tableName="answer_options">
+            <column name="question_id"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы submissions -->
+    <changeSet id="05-10-create-indexes-for-submissions-table" author="parog">
+        <createIndex indexName="idx_submissions_user_id" tableName="submissions">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_submissions_test_id" tableName="submissions">
+            <column name="test_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_submissions_status" tableName="submissions">
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Индексы для таблицы submission_details -->
+    <changeSet id="05-11-create-indexes-for-submission_details-table" author="parog">
+        <createIndex indexName="idx_submission_details_submission_id" tableName="submission_details">
+            <column name="submission_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_submission_details_question_id" tableName="submission_details">
+            <column name="question_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="04-1-create-submissions-table" author="parog">
+        <createTable tableName="submissions">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="status" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_user"
+                             references="users(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="test_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_test"
+                             references="tests(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="submitted_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="total_score" type="integer" defaultValueNumeric="0"/>
+
+            <column name="max_possible_score" type="integer" defaultValueNumeric="0"/>
+
+            <column name="time_spent_seconds" type="integer"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="04-2-create-submission_details-table" author="parog">
+        <createTable tableName="submission_details">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="submission_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_detail_submission"
+                             references="submissions(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="question_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_detail_question"
+                             references="questions(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="text_answer" type="text"/>
+
+            <column name="correct" type="boolean" defaultValueBoolean="false"/>
+
+            <column name="score_earned" type="integer" defaultValueNumeric="0"/>
+
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="04-3-create-submission_answers-table" author="parog">
+        <createTable tableName="submission_answers">
+
+            <column name="submission_detail_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_answer_detail"
+                             references="submission_details(id)"
+                             deleteCascade="true"/>
+            </column>
+
+            <column name="answer_option_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_submission_answer_option"
+                             references="answer_options(id)"
+                             deleteCascade="true"/>
+            </column>
+
+        </createTable>
+
+        <addPrimaryKey
+                tableName="submission_answers"
+                columnNames="submission_detail_id, answer_option_id"
+                constraintName="pk_submission_answers"/>
+
+    </changeSet>
+
+</databaseChangeLog>
