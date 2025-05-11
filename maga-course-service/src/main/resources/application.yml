@@ -1,0 +1,50 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: course-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/maga-diplom
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        #format_sql: true
+  liquibase:
+    enabled: false
+
+services:
+  user-service:
+    url: http://user-service:8091
+  test-service:
+    url: http://test-service:8093
+  submission-service:
+    url: http://submission-service:8094
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, prometheus, metrics" # эндпоинты для сбора метрик
+    endpoint:
+      health:
+        show-details: always
+    metrics:
+      tags:
+        application: ${spring.application.name} # группировка метрик по сервису
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true # включает гистограммы для времени ответа
+      sla:
+        http.server.requests: 10ms, 50ms, 100ms, 200ms, 500ms # SLA для времени ответа
+  prometheus:
+    metrics:
+      export:
+        enabled: true
